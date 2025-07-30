@@ -1,0 +1,144 @@
+[gd_scene load_steps=14 format=3 uid="uid://ciqqbe2mup6kb"]
+
+[ext_resource type="Script" uid="uid://hsdabasy8fby" path="res://Scripts/player.cs" id="1_5a7ea"]
+[ext_resource type="Script" uid="uid://btqid063mr2y6" path="res://Scripts/Player2.cs" id="2_8j60k"]
+[ext_resource type="Script" uid="uid://rciiui1r8orn" path="res://Scripts/Ball.cs" id="3_fo5ed"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gv5m4"]
+size = Vector2(32, 96)
+
+[sub_resource type="QuadMesh" id="QuadMesh_f3sb7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3sb7"]
+size = Vector2(32, 32)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fj7yv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
+size = Vector2(1168, 16)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tlwt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_036b0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tlwt5"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_aqk2v"]
+font_size = 48
+
+[node name="world" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(-504, 0)
+script = ExtResource("1_5a7ea")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_gv5m4")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Player"]
+position = Vector2(4.76837e-07, -9.53674e-07)
+scale = Vector2(32, 96)
+mesh = SubResource("QuadMesh_f3sb7")
+
+[node name="Player2" type="CharacterBody2D" parent="."]
+position = Vector2(504, 0)
+motion_mode = 1
+script = ExtResource("2_8j60k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player2"]
+shape = SubResource("RectangleShape2D_gv5m4")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Player2"]
+position = Vector2(0, -9.53674e-07)
+scale = Vector2(32, 96)
+mesh = SubResource("QuadMesh_f3sb7")
+
+[node name="Ball" type="CharacterBody2D" parent="."]
+script = ExtResource("3_fo5ed")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("RectangleShape2D_f3sb7")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Ball"]
+position = Vector2(4.76837e-07, 4.76837e-07)
+scale = Vector2(32, 32)
+mesh = SubResource("QuadMesh_fj7yv")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, -320)
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, 320)
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Walls"]
+position = Vector2(0, -320)
+scale = Vector2(1152, 16)
+mesh = SubResource("QuadMesh_tlwt5")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="Walls"]
+position = Vector2(0, 320)
+scale = Vector2(1152, 16)
+mesh = SubResource("QuadMesh_tlwt5")
+
+[node name="Goal1" type="Area2D" parent="."]
+position = Vector2(-592, 0)
+scale = Vector2(1, 35.6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal1"]
+shape = SubResource("RectangleShape2D_aqk2v")
+
+[node name="Goal2" type="Area2D" parent="."]
+position = Vector2(592, 0)
+scale = Vector2(1, 36.44)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal2"]
+shape = SubResource("RectangleShape2D_036b0")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -576.0
+offset_top = -312.0
+offset_right = 576.0
+offset_bottom = 328.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Score1" type="Label" parent="Control/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_tlwt5")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+
+[node name="Score2" type="Label" parent="Control/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_aqk2v")
+
+[connection signal="body_entered" from="Goal1" to="Ball" method="_on_goal_1_body_entered"]
+[connection signal="body_entered" from="Goal2" to="Ball" method="_on_goal_2_body_entered"]
